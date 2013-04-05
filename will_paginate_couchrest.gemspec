@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "will_paginate_couchrest"
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["samlown"]
@@ -26,7 +26,8 @@ Gem::Specification.new do |s|
     "lib/will_paginate_couchrest/proxy_methods.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb",
-    "spec/will_paginate_couchrest_spec.rb"
+    "spec/will_paginate_couchrest_spec.rb",
+    "will_paginate_couchrest.gemspec"
   ]
   s.homepage = "http://github.com/samlown/will_paginate_couchrest"
   s.require_paths = ["lib"]

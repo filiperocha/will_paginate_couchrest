@@ -1,20 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe CouchRest::WillPaginate do
-
-  class SomeExtendedDoc < CouchRest::ExtendedDocument
-    use_database SPEC_COUCH
-    property :name
-    paginated_view_by :name
-  end
-
   class SomeModel < CouchRest::Model::Base
     use_database SPEC_COUCH
     property :name
     paginated_view_by :name
   end
 
-  [SomeExtendedDoc, SomeModel].each do |klass|
+  [SomeModel].each do |klass|
 
     describe klass do
 
