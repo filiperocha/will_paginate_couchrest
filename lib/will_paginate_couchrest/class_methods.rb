@@ -8,56 +8,56 @@ module CouchRest
     module ClassMethods
       # Define a CouchDB will paginate view. The name of the view will be the concatenation
       # of <tt>paginate_by</tt> and the keys joined by <tt>_and_</tt>
-      # 
+      #
       # ==== Example paginated views:
-      #  
+      #
       #   class Post
       #     # view with default options
       #     # query with Post.paginate_by_date
       #     paginated_view_by :date, :descending => true
-      #  
+      #
       #     # view with compound sort-keys
       #     # query with Post.by_user_id_and_date
       #     paginated_view_by :user_id, :date
-      #  
+      #
       #     # view with custom map/reduce functions
       #     # query with Post.by_tags :reduce => true
-      #     paginated_view_by :tags,                                                
-      #       :map =>                                                     
-      #         "function(doc) {                                          
-      #           if (doc['couchrest-type'] == 'Post' && doc.tags) {                   
-      #             doc.tags.forEach(function(tag){                       
-      #               emit(doc.tag, 1);                                   
-      #             });                                                   
-      #           }                                                       
-      #         }",                                                       
-      #       :reduce =>                                                  
-      #         "function(keys, values, rereduce) {                       
-      #           return sum(values);                                     
-      #         }"                                                        
+      #     paginated_view_by :tags,
+      #       :map =>
+      #         "function(doc) {
+      #           if (doc['type'] == 'Post' && doc.tags) {
+      #             doc.tags.forEach(function(tag){
+      #               emit(doc.tag, 1);
+      #             });
+      #           }
+      #         }",
+      #       :reduce =>
+      #         "function(keys, values, rereduce) {
+      #           return sum(values);
+      #         }"
       #   end
-      #  
+      #
       # <tt>paginated_view_by :date</tt> will create a view defined by this Javascript
       # function:
-      #  
+      #
       #   function(doc) {
-      #     if (doc['couchrest-type'] == 'Post' && doc.date) {
+      #     if (doc['type'] == 'Post' && doc.date) {
       #       emit(doc.date, 1);
       #     }
       #   }
       #
       # And a standard summing reduce function like the following:
-      #  
-      #   function(keys, values, rereduce) {                       
+      #
+      #   function(keys, values, rereduce) {
       #     return sum(values);
-      #   } 
+      #   }
       #
       # It can be queried by calling <tt>Post.paginate_by_date</tt> which accepts all
       # valid options for CouchRest::Database#view. In addition, calling with
       # the <tt>:raw => true</tt> option will return the view rows
       # themselves. By default <tt>Post.by_date</tt> will return the
       # documents included in the generated view.
-      #  
+      #
       # For further details on <tt>view_by</tt>'s other options, please see the
       # standard documentation.
       def paginated_view_by(*keys)
@@ -70,7 +70,7 @@ module CouchRest
         doc_keys = keys.collect{|k| "doc['#{k}']"}
         key_emit = doc_keys.length == 1 ? "#{doc_keys.first}" : "[#{doc_keys.join(', ')}]"
         guards = opts.delete(:guards) || []
-        guards.push("(doc['couchrest-type'] == '#{self.to_s}')")
+        guards.push("(doc['type'] == '#{self.to_s}')")
         guards.concat doc_keys
 
         opts = {
@@ -82,7 +82,7 @@ module CouchRest
             }
           ",
           :reduce => "
-            function(keys, values, rereduce) {                       
+            function(keys, values, rereduce) {
               return sum(values);
             }
           "
@@ -111,7 +111,7 @@ module CouchRest
 
       ##
       # Return a WillPaginate collection suitable for usage
-      # 
+      #
       def paginated_view(view_name, options = {})
         raise "Missing per_page parameter" if options[:per_page].nil?
 
@@ -139,7 +139,7 @@ module CouchRest
         end
       end
     end
-    
+
   end
 end # module CouchRest
 

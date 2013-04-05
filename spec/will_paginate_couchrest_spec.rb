@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe CouchRest::WillPaginate do
-  
+
   class SomeExtendedDoc < CouchRest::ExtendedDocument
     use_database SPEC_COUCH
     property :name
@@ -15,7 +15,7 @@ describe CouchRest::WillPaginate do
   end
 
   [SomeExtendedDoc, SomeModel].each do |klass|
-   
+
     describe klass do
 
       before(:all) do
@@ -30,7 +30,7 @@ describe CouchRest::WillPaginate do
         klass.should_receive(:view_by)
         klass.paginated_view_by :name
       end
-      
+
       it "should respond to the view and paginated method" do
         klass.should respond_to :paginate_by_name
         # @some_doc.stub(:id).and_return(123)
@@ -38,7 +38,7 @@ describe CouchRest::WillPaginate do
 
       it "should accept request when no results" do
         docs = klass.paginate_by_name(:per_page => 5)
-        docs.total_entries.should eql(0)    
+        docs.total_entries.should eql(0)
       end
 
       it "should accept request without page" do

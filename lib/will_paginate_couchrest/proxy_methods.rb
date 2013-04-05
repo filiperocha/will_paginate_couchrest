@@ -13,7 +13,7 @@ module CouchRest
       end
 
       def paginated_view(view_name, opts = {})
-        opts = { 
+        opts = {
           :database => @database
         }.merge(opts)
         result = @klass.paginated_view(view_name, opts)
